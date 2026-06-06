@@ -1,0 +1,221 @@
+/* src/index.css */
+/* ==========================================================================
+   Taskbox 官方高保真完整样式表（包含全局、页面、列表、单项及图标）
+   ========================================================================== */
+
+   @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,800');
+
+   :root {
+     --font-sans: 'Nunito Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+   }
+   
+   body {
+     font-family: var(--font-sans);
+     font-size: 14px;
+     line-height: 20px;
+     color: #333333;
+     background-color: #26c6da; /* 整个大背景的天蓝色 */
+     margin: 0;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+   }
+   
+   /* 页面和主容器布局 */
+   .page {
+     background: #f8f9fa;
+     min-height: 100vh;
+   }
+   
+   nav {
+     background: #d3edf4;
+     border-bottom: 1px solid #b8e3ed;
+     padding: 15px 20px;
+   }
+   
+   nav .title-page {
+     font-size: 20px;
+     line-height: 24px;
+     font-weight: 800;
+     color: #1c3f53;
+     margin: 0;
+   }
+   
+   /* 列表包装器 */
+   .list-items {
+     position: relative;
+     background: white;
+     min-height: 288px;
+   }
+   
+   /* 每一个任务条（Task.tsx）的现代 Flex 布局 */
+   .list-item {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     height: 3rem;
+     width: 100%;
+     background: white;
+     transition: all ease-in 150ms;
+     box-sizing: border-box;
+   }
+   
+   .list-item:hover {
+     background: #f0f9fb;
+   }
+   
+   .list-item + .list-item {
+     border-top: 1px solid #f0f2f3;
+   }
+   
+   /* 复选框样式 */
+   .checkbox {
+     cursor: pointer;
+     display: inline-block;
+     height: 3rem;
+     position: relative;
+     width: 3.5rem;
+   }
+   
+   .checkbox input[type="checkbox"] {
+     opacity: 0;
+     position: absolute;
+     z-index: -1;
+   }
+   
+   .checkbox-custom {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     height: 14px;
+     width: 14px;
+     border: 2px solid #2cc5d2;
+     border-radius: 2px;
+     transition: all 150ms ease-in;
+   }
+   
+   /* 任务文字 */
+   .list-item .title {
+     flex: 1;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+   }
+   
+   .list-item .title input {
+     background: transparent;
+     border: none;
+     width: 100%;
+     font-size: 14px;
+     font-weight: bold;
+     color: #333;
+   }
+   
+   .list-item .title input:focus {
+     outline: none;
+   }
+   
+   /* 动作按钮（星星） */
+   .list-item .actions {
+     padding-right: 20px;
+   }
+   
+   .list-item .actions button {
+     background: transparent;
+     border: none;
+     cursor: pointer;
+     padding: 8px;
+   }
+   
+   /* ----------------------------------------------
+      状态机视觉流 (UX States)
+      ---------------------------------------------- */
+   
+   /* 1. 置顶状态 (TASK_PINNED) -> 变黄、飞到顶部 */
+   .list-item.TASK_PINNED {
+     background: #fff9e6;
+   }
+   .list-item.TASK_PINNED .icon-star {
+     color: #f1a80a !important;
+   }
+   
+   /* 2. 归档状态 (TASK_ARCHIVED) -> 变灰、打线 */
+   .list-item.TASK_ARCHIVED .title input {
+     color: #aaa;
+     text-decoration: line-through;
+   }
+   .list-item.TASK_ARCHIVED .checkbox-custom {
+     background: #2cc5d2;
+   }
+   
+   /* 3. 空状态 (Empty) 与 报错状态 (Error) */
+   .wrapper-message {
+     position: absolute;
+     top: 45%;
+     left: 0;
+     width: 100%;
+     transform: translateY(-50%);
+     text-align: center;
+     padding: 38px 0;
+   }
+   
+   .wrapper-message .title-message {
+     font-size: 16px;
+     font-weight: 800;
+     color: #555459;
+     margin: 0 0 4px;
+   }
+   
+   .wrapper-message .subtitle-message {
+     font-size: 14px;
+     color: #9aa7af;
+     margin: 0;
+   }
+   
+   /* 各种伪图标字体模拟 */
+   .icon-star::before { content: "★"; font-size: 18px; color: #eee; }
+   .icon-check::before { content: "✔"; font-size: 40px; color: #2cc5d2; display: block; margin-bottom: 10px; }
+   .icon-face-sad::before { content: "😭"; font-size: 48px; display: block; margin-bottom: 10px; }
+   
+   /* 4. 骨架屏加载样式 (Loading) */
+   .loading-item {
+     height: 56px;
+     padding-left: 20px;
+     display: flex;
+     align-items: center;
+     background: white;
+     border-bottom: 1px solid #f0f0f0;
+   }
+   
+   @keyframes loading-glow {
+     0%, 100% { opacity: 1; }
+     50% { opacity: 0.4; }
+   }
+   
+   .loading-item .glow-checkbox {
+     display: inline-block;
+     width: 14px;
+     height: 14px;
+     background: #dfe8ed;
+     border-radius: 2px;
+     animation: loading-glow 1.5s ease-in-out infinite;
+     margin-right: 16px;
+   }
+   
+   .loading-item .glow-text {
+     display: inline-block;
+     animation: loading-glow 1.5s ease-in-out infinite;
+   }
+   
+   .loading-item .glow-text span {
+     display: inline-block;
+     vertical-align: middle;
+     background: #dfe8ed;
+     height: 12px;
+     border-radius: 2px;
+     margin-right: 4px;
+     color: transparent;
+   }
+   .loading-item .glow-text span:nth-child(1) { width: 50px; }
+   .loading-item .glow-text span:nth-child(2) { width: 30px; }
+   .loading-item .glow-text span:nth-child(3) { width: 80px; }
